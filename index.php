@@ -1,27 +1,28 @@
 <?php
-interface carImplement
+interface Cars
 {
     public function priceCar();
 }
-interface tvImplement
+
+interface TVs
 {
     public function __construct($brand, $diagonal, $resolution);
     public function totalPrice();
 }
-interface penImplement
+interface Pens
 {
     public function penInfo();
 }
-interface duckImplement
+interface Ducks
 {
     public function __construct();
-    public function count_color ();
+    public function presence ();
 }
-interface productImplement
+interface Products
 {
     public function getProducts();
 }
-class oneSuper
+class FirstClass
 {
     public $brand;
     public function __construct($brand)
@@ -38,8 +39,8 @@ class oneSuper
         return $this;
     }
 }
-echo "<br><br>";
-class Car extends oneSuper implements carImplement
+echo "<br>";
+class Car extends FirstClass implements Cars
 {
     public $color;
     public $enginePower;
@@ -48,52 +49,54 @@ class Car extends oneSuper implements carImplement
     {
         if($this->automatedGearbox == 1)
         {
-            return "Цена " . $this->brand . " с АТ: " . $this->price*1.8 . "$";
+            return "Price " . $this->brand . " is: " . $this->price*1.8 . "$";
         } else
             return $this->price;
     }
 }
-$carAudi = new Car("Audi");
-$carAudi->enginePower = 6.5;
-$carAudi->price = 40000;
+$carAudi = new Car("Mersedes");
+$carAudi->enginePower = 3;
+$carAudi->price = 10000;
 $carAudi->automatedGearbox = 1;
 echo $carAudi->priceCar() . PHP_EOL;
 echo "<br>";
-$carRenault = new Car("Renault");
-$carRenault->price = 10000;
-$carRenault->color = "Yellow";
-$carRenault->enginePower = 1.6;
+$carRenault = new Car("Audi");
+$carRenault->price = 12000;
+$carRenault->color = "Black";
+$carRenault->enginePower = 2;
 $carRenault->automatedGearbox = 1;
 echo $carRenault->priceCar() . PHP_EOL;
-echo "<br><br>";
-class Tv extends oneSuper implements tvImplement
+echo "<br>";
+
+class Tv extends FirstClass implements TVs
 {
     public $diagonal;
     public $resolution;
     public $totalPrice;
-    public function __construct($brand, $diagonal, $resolution)
+    public function __construct($brand, $diagonal, $wifi)
     {
         parent::__construct($brand);
         $this->diagonal = $diagonal;
-        $this->resolution = $resolution;
+        $this->wifi = $wifi;
     }
     public function totalPrice()
     {
-        if((strtolower(parent::getBrand()) == "Sumsung" && $this->diagonal >= 1.1 && $this->resolution == "4k") || (strtolower(parent::getBrand()) == "LG" && $this->diagonal >= 1.1 && $this->resolution == "4k"))
+        if((strtolower(parent::getBrand()) == "Sumsung" && $this->diagonal >= 1.1 && $this->wifi == "Yes") || (strtolower(parent::getBrand()) == "LG" && $this->diagonal >= 1.1 && $this->wifi == "Yes"))
         {
             return  100500;
         }
         return 35000;
     }
 }
-$tvSumsung = new TV('Sumsung', 1.1, '4k');
-$tvLg = new TV('LG', 1.1, '4k');
+$tvSumsung = new TV('Sumsung', 1.1, 'Yes');
+$tvLg = new TV('LG', 1.1, 'No');
 echo $tvSumsung->brand . "<br>";
 echo $tvSumsung->totalPrice(). "<br>";
 echo $tvLg->brand . "<br>";
 echo $tvLg->totalPrice(). "<br>";
-echo "<br><br>";
-class Pen extends oneSuper implements penImplement
+echo "<br>";
+
+class Pen extends FirstClass implements Pens
 {
     public $color;
     public $price;
@@ -102,52 +105,54 @@ class Pen extends oneSuper implements penImplement
         return parent::getBrand() . ": " . $this->color . "-" . $this->price;
     }
 }
-$penErichKrause = new Pen("ErichKrause");
-$penErichKrause->color = 'black';
-$penErichKrause->price = 300;
+$penErichKrause = new Pen("BIC");
+$penErichKrause->color = 'blue';
+$penErichKrause->price = 100;
 echo $penErichKrause->penInfo() . PHP_EOL;
 echo "<br>";
 $penParker = new Pen("Parker");
-$penParker->color = 'gold';
-$penParker->price = 1000;
+$penParker->color = 'black';
+$penParker->price = 200;
 echo $penParker->penInfo() . PHP_EOL;
-echo "<br><br>";
-final class Duck implements duckImplement
+echo "<br>";
+
+final class Duck implements Ducks
 {
     public static $count = 0;
     public function __construct()
     {
         self::$count++;
     }
-    public function count_color()
+    public function presence()
     {
-        if(self::$count <= 1)
+        if(self::$count == 1)
         {
-            return "Duck is white" . "<br>";
+            return "Duck is here" . "<br>";
         }
         else
         {
-            return "Duck is grey" . "<br>";
+            return "Ducks are here" . "<br>";
         }
     }
 }
 $duckWhite = new Duck;
-echo $duckWhite->count_color() . PHP_EOL;
+echo $duckWhite->presence() . PHP_EOL;
 $duckWhite2 = new Duck;
-echo $duckWhite2->count_color() . PHP_EOL;
+echo $duckWhite2->presence() . PHP_EOL;
 $duckWhite3 = new Duck;
-echo $duckWhite3->count_color() . PHP_EOL;
-echo "<br><br>";
-class Product extends oneSuper implements productImplement
+echo $duckWhite3->presence() . PHP_EOL;
+echo "<br>";
+
+class Product extends FirstClass implements Products
 {
-    public $shirt;
-    public $jeans;
-    public $shirtPrice;
-    public $jeansPrice;
+    public $bag;
+    public $shoes;
+    public $bagPrice;
+    public $shoesPrice;
     public $price;
     public function getProducts()
     {
-        $this->price = ($this->shirt * $this->shirtPrice) + ($this->jeans * $this->jeansPrice);
+        $this->price = ($this->bag * $this->bagPrice) + ($this->shoes * $this->shoesPrice);
         if($this->price >= 15000)
         {
             $this->price = ($this->price - ($this->price/100)*15);
@@ -156,21 +161,21 @@ class Product extends oneSuper implements productImplement
         return $this->brand . ": " . $this->price;
     }
 }
-$productMustang = new Product("Mustang");
-$productMustang->shirt = rand(1, 3);
-$productMustang->shirtPrice = 3000;
-$productMustang->jeans = rand(1,3);
-$productMustang->jeansPrice = 9000;
-echo $productMustang->getProducts() . PHP_EOL;
+$productMustHave = new Product("MustHave");
+$productMustHave->bag = rand(1, 3);
+$productMustHave->bagPrice = 1000;
+$productMustHave->shoes = rand(1,3);
+$productMustHave->shoessPrice = 2000;
+echo $productMustHave->getProducts() . PHP_EOL;
 echo "<br>";
-$productLevis = new Product("Levis");
-$productLevis->shirt = rand(1, 3);
-$productLevis->shirtPrice = 4000;
-$productLevis->jeans = rand(1, 3);
-$productLevis->jeansPrice = 10000;
-echo $productLevis->getProducts() . PHP_EOL;
-echo "<br><br>";
- ?>
+$productEcco = new Product("Ecco");
+$productEcco->bag = rand(1, 3);
+$productEcco->bagPrice = 5000;
+$productEcco->shoes = rand(1, 3);
+$productEcco->shoesPrice = 10000;
+echo $productEcco->getProducts() . PHP_EOL;
+echo "<br>";
+?>
  <!doctype html>
  <html lang = "ru">
  <head>
